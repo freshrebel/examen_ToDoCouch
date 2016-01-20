@@ -40,3 +40,71 @@ function editDoc(id, rev, lastName, firstName, points){
     
     $('#edit').html(html);
 }
+
+function updateDoc(){
+    
+    var id = $("#_id").val();
+    var rev = $("#_rev").val();
+    var ingavedatum = $("#ingavedatum").val();
+    var einddatum = $("#einddatum").val();
+    var prioriteit = $("#prioriteit").val();
+    var beschrijving = $("#beschrijving").val();
+    var status = $("#status").val();
+
+    var doc = {};
+
+    doc._id = id;
+    doc._rev = rev;
+    doc.ingavedatum = ingavedatum;
+    doc.einddatum = einddatum;
+    doc.prioriteit = prioriteit;
+    doc.beschrijving = beschrijving;
+    doc.beschrijving = beschrijving;
+    var json = JSON.stringify(doc);
+
+    $.ajax({
+        type : 'PUT',
+        url : '../../' + id,
+        data : json,
+        contentType : 'application/json',
+        async : true,
+        success : function(data){
+            $('#edit').hide();
+            $('#output').show();
+            buildOutput();
+        },
+        error : function(XMLHttpRequest, textStatus, errorThrown){
+            console.log(errorThrown);
+        }
+    });
+}
+
+function buildOutput(){
+
+    $('#output').empty();
+    var html = '<table class="table table-hover">';
+    $.ajax({
+        type : 'GET',
+        url : '../../_all_docs?include_docs=true',
+        async : true,
+        success : function(data){
+            var arr = JSON.parse(data).rows;
+
+            for(var i = 0; i < arr.length; i++){
+
+                if (arr[i].id.indexOf('_design') == -1){
+                    var doc = arr[i].doc;
+                    html += '<tr><td>' + doc.ingavedatum + '</td><td>' + doc.einddatum
+                            + '</td><td>' + doc.prioriteit + '</td><td>' + doc.beschrijving + '</td><td>' + doc.status
+                            + '</td>'
+                            + '<td><button type="button" class="btn btn-success" onClick="editDoc(\'' + doc._id + '\',\'' + doc._rev + '\',\'' + doc.ingavedatum+ '\',\'' + doc.einddatum + '\',\'' + doc.prioriteit+ '\',\'' + doc.beschrijving+ '\',\'' + doc.status + '\')">Edit</button></td>';
+                }
+            }
+            html += '</table>';
+            $('#output').html(html);
+        },
+        error : function(XMLHttpRequest, textStatus, errorThrown){
+            console.log(errorThrown);
+        }
+    });
+}
