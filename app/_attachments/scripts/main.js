@@ -5,7 +5,6 @@
 function searchDoc(){
     
     var name = $("#id").val();
-    
     $.ajax({
         type:    'GET',
         url:    '../../' + name,
@@ -57,7 +56,7 @@ function updateDoc(){
     doc._rev = rev;
     doc.ingavedatum = ingavedatum;
     doc.einddatum = einddatum;
-    doc.prioriteit = prioriteit;
+    doc.prioriteit = parseInt(prioriteit);
     doc.beschrijving = beschrijving;
     doc.beschrijving = beschrijving;
     var json = JSON.stringify(doc);
