@@ -11,14 +11,14 @@ function searchDoc(){
         async: true,
         success:function(data){
             var doc = JSON.parse(data);
-            editDoc(docName, doc._rev, doc.lastName, doc.firstName, doc.points);
+            editDoc(name, doc._rev, doc.ingavedatum, doc.einddatum, doc.prioriteit, doc.beschrijving, doc.status);
             $("#id").val('');
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) { alert(XMLHttpRequest.responseText); }
     });    
 }
 
-function editDoc(id, rev, lastName, firstName, points){
+function editDoc(id, rev, ingavedatum, einddatum, prioriteit, beschrijving, status){
     
     $('#output').hide();
     $('#edit').show();
@@ -58,7 +58,7 @@ function updateDoc(){
     doc.einddatum = einddatum;
     doc.prioriteit = parseInt(prioriteit);
     doc.beschrijving = beschrijving;
-    doc.beschrijving = beschrijving;
+    doc.status = status;
     var json = JSON.stringify(doc);
 
     $.ajax({
