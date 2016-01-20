@@ -1,3 +1,3 @@
 function(doc) {
-  emit()
+  emit(doc.prioriteit, doc)
 };
